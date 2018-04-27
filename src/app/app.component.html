@@ -76,13 +76,13 @@
               </mat-tab>
               <mat-tab *ngIf="car.networks" label="Network Info">
                 <p>Networks:</p>
-                <p *ngIf="car.networks.lo[0].address">
+                <p *ngIf="car.networks.lo && car.networks.lo[0].address">
                   lo: {{car.networks.lo[0].address}}
                 </p>
-                <p *ngIf="car.networks.usb0[0].address">
+                <p *ngIf="car.networks.usb0 && car.networks.usb0[0].address">
                   usb: {{car.networks.usb0[0].address}}
                 </p>
-                <p *ngIf="car.networks.wlan0[0].address">
+                <p *ngIf="car.networks.wlan0 && car.networks.wlan0[0].address">
                   wlan: {{car.networks.wlan0[0].address}}
                 </p>
               </mat-tab>
