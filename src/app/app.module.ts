@@ -10,6 +10,8 @@ import {MatButtonModule,
   MatGridListModule, 
   MatCardModule,
   MatRadioModule,
+  MatTabsModule,
+  MatInputModule
 } from '@angular/material';
 
 @NgModule({
@@ -25,7 +27,9 @@ import {MatButtonModule,
     MatCheckboxModule,
     MatGridListModule,
     MatCardModule,
-    MatRadioModule
+    MatRadioModule,
+    MatTabsModule,
+    MatInputModule
   ],
   entryComponents: [
     AppComponent
