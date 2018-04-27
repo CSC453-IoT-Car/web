@@ -26,12 +26,12 @@ export class BackendService {
   }
 
   setTarget(id: number, targetId: number) {
-    let body = {"id":id, "key":this.key, "targetId":targetId}
+    let body = {"id":String(id), "key":this.key, "targetId":targetId}
     return this.http.post(this.url + '/set/target/', body, httpOptions)
   }
 
   registerBeacon(id) {
-    let body = {"id":id, "key":this.key};
+    let body = {"id":String(id), "key":this.key};
     return this.http.post(this.url + '/beacon/register', body, httpOptions);
   }
 
