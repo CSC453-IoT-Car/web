@@ -1,92 +1,99 @@
 <div style="max-width: 80%; margin: 0 auto 0 auto">
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <div *ngIf="!loggedIn" style="margin-bottom: 20px">
-    <mat-form-field style="width:100%">
-      <input matInput placeholder="Password" #passwordInput>
-    </mat-form-field>
-    <button mat-raised-button color="primary" (click)="login(passwordInput.value)">Submit</button>
-  </div>
-</div>
-
-<div *ngIf="loggedIn" fxLayoutAlign="center center" fxLayout="row">
-  <mat-card fxFlex>
-    <mat-card-header>
-      <mat-card-title>General Controls</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <p style="margin-bottom: 0px;">Add new target beacon:</p>
+  <div style="text-align:center">
+    <h1>
+      Welcome to {{ title }}!
+    </h1>
+    <div *ngIf="!loggedIn" style="margin-bottom: 20px">
       <mat-form-field style="width:100%">
-        <input matInput placeholder="Beacon Id" #beaconInput>
+        <input matInput placeholder="Password" #passwordInput>
       </mat-form-field>
-      <button mat-raised-button color="primary" (click)="registerBeacon(beaconInput.value)">Add</button>
-    </mat-card-content>
-  </mat-card>
-</div>
-
-<div fxLayoutAlign="center center" fxLayout="row">
-  <div fxFlex *ngFor="let beacon of beacons">
-    <mat-card style="margin-top: 20px;" *ngIf="beacon.id != -1">
-      <mat-card-header>
-        <mat-card-title>Target Beacon</mat-card-title>
-        <mat-card-subtitle>ID: {{beacon.id}}</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-actions>
-        <button mat-raised-button color="warn" (click)="remove(beacon.id)">Remove From Network</button>
-      </mat-card-actions>
-    </mat-card>
+      <button mat-raised-button color="primary" (click)="login(passwordInput.value)">Submit</button>
+    </div>
   </div>
-</div>
 
-<div fxLayoutAlign="center center" fxLayout="row">
-  <div fxFlex *ngFor="let car of cars">
-    <mat-card style="margin-top: 20px;">
+  <div *ngIf="loggedIn" fxLayoutAlign="center center" fxLayout="row">
+    <mat-card fxFlex>
       <mat-card-header>
-        <mat-card-title>IoT Car</mat-card-title>
-        <mat-card-subtitle>ID: {{car.id}}</mat-card-subtitle>
+        <mat-card-title>General Controls</mat-card-title>
       </mat-card-header>
-      <mat-card-content fxLayout="row" fxLayoutAlign="center center">
-        <div fxFlex=50>
-          <mat-tab-group class="demo-tab-group">
-            <mat-tab label="Car Info">
-              <p>Current Target: {{car.targetId}}</p>
-              <p>Status: {{car.status}}</p>
-              <p>Blocking: {{car.blocking}}</p>
-              <p>Last Communication to Backend: {{car.lastCom}} seconds ago</p>
-            </mat-tab>
-            <mat-tab label="Manage">
-              <p>Set car target:</p>
-              <mat-radio-group class="radio-group">
-                <mat-radio-button class="radio-button" *ngFor="let beacon of beacons" [value]="beacon.id" (change)="setTarget(car, beacon)">ID: {{beacon.id}}</mat-radio-button>
-              </mat-radio-group>
-              <div style="min-height: 50px"></div>
-            </mat-tab>
-            <mat-tab label="Sensor Data">
-              <p>IR Detectors Triggered: [{{car.detector}}]</p>
-              <p>Last Ultrasonic reading: {{car.ultrasonic}}</p>
-            </mat-tab>
-            <mat-tab *ngIf="car.networks" label="Network Info">
-              <p>Networks:</p>
-              <p *ngIf="car.networks.lo[0].address">
-                lo: {{car.networks.lo[0].address}}
-              </p>
-              <p *ngIf="car.networks.usb0[0].address">
-                usb: {{car.networks.usb0[0].address}}
-              </p>
-              <p *ngIf="car.networks.wlan0[0].address">
-                wlan: {{car.networks.wlan0[0].address}}
-              </p>
-            </mat-tab>
-          </mat-tab-group>
+      <mat-card-content>
+        <div fxLayout="column">
+          <div>
+            <p style="margin-bottom: 0px;">Add new target beacon:</p>
+            <mat-form-field style="width:100%">
+              <input matInput placeholder="Beacon Id" #beaconInput>
+            </mat-form-field>
+            <button mat-raised-button color="primary" (click)="registerBeacon(beaconInput.value)">Add</button>
+          </div>
+          <div *ngIf="items.length == 0" style="margin-top: 20px">
+            <button mat-raised-button color="primary" (click)="getItems()">Refresh Data</button>
+          </div>
         </div>
       </mat-card-content>
-      <mat-card-actions>
-        <button mat-raised-button color="warn" (click)="remove(car.id)">Remove From Network</button>
-        <button mat-raised-button color="primary" (click)="getItems()">Refresh Data</button>
-      </mat-card-actions>
     </mat-card>
   </div>
-</div>
+
+  <div fxLayoutAlign="center center" fxLayout="row">
+    <div fxFlex *ngFor="let beacon of beacons">
+      <mat-card style="margin-top: 20px;" *ngIf="beacon.id != -1">
+        <mat-card-header>
+          <mat-card-title>Target Beacon</mat-card-title>
+          <mat-card-subtitle>ID: {{beacon.id}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-actions>
+          <button mat-raised-button color="warn" (click)="remove(beacon.id)">Remove From Network</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+
+  <div fxLayoutAlign="center center" fxLayout="row">
+    <div fxFlex *ngFor="let car of cars">
+      <mat-card style="margin-top: 20px;">
+        <mat-card-header>
+          <mat-card-title>IoT Car</mat-card-title>
+          <mat-card-subtitle>ID: {{car.id}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content fxLayout="row" fxLayoutAlign="center center">
+          <div fxFlex=50>
+            <mat-tab-group class="demo-tab-group">
+              <mat-tab label="Car Info">
+                <p>Current Target: {{car.targetId}}</p>
+                <p>Status: {{car.status}}</p>
+                <p>Blocking: {{car.blocking}}</p>
+                <p>Last Communication to Backend: {{car.lastCom}} seconds ago</p>
+              </mat-tab>
+              <mat-tab label="Manage">
+                <p>Set car target:</p>
+                <mat-radio-group class="radio-group">
+                  <mat-radio-button class="radio-button" *ngFor="let beacon of beacons" [value]="beacon.id" (change)="setTarget(car, beacon)">ID: {{beacon.id}}</mat-radio-button>
+                </mat-radio-group>
+                <div style="min-height: 50px"></div>
+              </mat-tab>
+              <mat-tab label="Sensor Data">
+                <p>IR Detectors Triggered: [{{car.detector}}]</p>
+                <p>Last Ultrasonic reading: {{car.ultrasonic}}</p>
+              </mat-tab>
+              <mat-tab *ngIf="car.networks" label="Network Info">
+                <p>Networks:</p>
+                <p *ngIf="car.networks.lo[0].address">
+                  lo: {{car.networks.lo[0].address}}
+                </p>
+                <p *ngIf="car.networks.usb0[0].address">
+                  usb: {{car.networks.usb0[0].address}}
+                </p>
+                <p *ngIf="car.networks.wlan0[0].address">
+                  wlan: {{car.networks.wlan0[0].address}}
+                </p>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="warn" (click)="remove(car.id)">Remove From Network</button>
+          <button mat-raised-button color="primary" (click)="getItems()">Refresh Data</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
 </div>
