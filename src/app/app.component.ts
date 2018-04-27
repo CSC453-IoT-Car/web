@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
 
     login(pass) {
         this.backendService.login(pass).subscribe(
-            data => {this.backendService.key = data.key;},
+            data => {var d:any = data; this.backendService.key = d.key},
             err => {console.log('err?'); console.log(err)},
             () => {
                 console.log('Logged in');
