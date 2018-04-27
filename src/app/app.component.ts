@@ -19,7 +19,12 @@ export class AppComponent implements OnInit {
     constructor(private backendService: BackendService, 
         // public dialog: MatDialog
     ) {
-        
+        var k = localStorage.getItem("key");
+        if (k) {
+            this.backendService.key = k;
+            this.loggedIn = true;
+            this.getItems();
+        }
     }
 
     ngOnInit() {
@@ -28,7 +33,11 @@ export class AppComponent implements OnInit {
 
     login(pass) {
         this.backendService.login(pass).subscribe(
-            data => {var d:any = data; this.backendService.key = d.key},
+            data => {
+                var d:any = data;
+                this.backendService.key = d.key;
+                localStorage.setItem("key", d.key);
+            },
             err => {console.log('err?'); console.log(err)},
             () => {
                 console.log('Logged in');
